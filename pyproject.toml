@@ -79,6 +79,7 @@ solvers = [
 include = ["linopy"]
 
 [tool.setuptools_scm]
+version_scheme = "post-release"
 write_to = "linopy/version.py"
 
 [tool.coverage.run]
