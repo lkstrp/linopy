@@ -86,12 +86,8 @@ jobs:
       - name: Install package from ref
         if: env.pinned == 'false'
         run: |
-          PYPSA_VERSION=$(pixi list | grep "pypsa" | awk '{print $2}')
-          echo "Current pypsa version: $PYPSA_VERSION"
-          pixi remove pypsa
           pixi remove linopy
           pixi add --pypi --git https://github.com/${{ github.repository }}.git ${{ github.event.repository.name }} --rev ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
-          pixi add --pypi "pypsa==$PYPSA_VERSION"
 
       - name: Run snakemake test workflows
         if: env.pinned == 'false'
