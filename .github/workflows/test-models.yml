@@ -86,8 +86,16 @@ jobs:
       - name: Install package from ref
         if: env.pinned == 'false'
         run: |
+          echo "Before removal:"
+          pixi list | grep -E "pypsa|linopy"
+          pixi remove pypsa
           pixi remove linopy
           pixi add --pypi --git https://github.com/${{ github.repository }}.git ${{ github.event.repository.name }} --rev ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          pixi add --pypi pypsa
+          echo "After installation:"
+          pixi list | grep -E "pypsa|linopy"
+          echo "Checking actual Python package versions:"
+          pixi run python -c "import pypsa, linopy; print(f'pypsa: {pypsa.__version__}'); print(f'linopy: {linopy.__version__}')"
 
       - name: Run snakemake test workflows
         if: env.pinned == 'false'
